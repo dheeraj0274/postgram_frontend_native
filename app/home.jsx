@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
+  RefreshControl,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -19,10 +20,10 @@ export default function HomeScreen() {
   
   const [commentText, setCommentText] = useState({});
   const backendURL = process.env.EXPO_PUBLIC_BACKEND_URL;
-  
 
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
+ 
   const fetchUserAndPosts = async () => {
     try {
       const storedUser = await AsyncStorage.getItem("user");
@@ -52,9 +53,24 @@ export default function HomeScreen() {
       console.error(err);
     }
   };
+  
+  useEffect(() => {
+  
 
   fetchUserAndPosts();
 }, []);
+
+
+
+
+const onRefresh=async()=>{
+  setRefreshing(true);
+  await fetchUserAndPosts();
+  setRefreshing(false)
+
+}
+  
+
 
 
 
@@ -206,6 +222,9 @@ const imageURL = item.image?.startsWith("http")
         renderItem={renderPost}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 80 }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+        }
       />
     </View>
   );
