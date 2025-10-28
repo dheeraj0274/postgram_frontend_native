@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert, Imag
 import { useRouter } from "expo-router";
 import axios from 'axios'
 import diwali from '../assets/images/diwali3.jpg'
+import { StatusBar } from "expo-status-bar";
 
 export default function SignupScreen() {
   const router = useRouter();
@@ -43,8 +44,9 @@ export default function SignupScreen() {
   };
 
   return (
-    <ImageBackground source={diwali} style={styles.container}   resizeMode="cover">
-      <Image source={require("../assets/images/favicon.png")} style={styles.logo} />
+    <View style={styles.container}   >
+      <StatusBar style="light"/>
+      <Image source={require("../assets/images/PostLogo.png")} style={styles.logo} />
       <Text style={styles.title}>Create an Account</Text>
 
       <TextInput
@@ -80,26 +82,28 @@ export default function SignupScreen() {
           <Text style={styles.loginText}>Login</Text>
         </TouchableOpacity>
       </View>
-    </ImageBackground>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1,  alignItems: "center", justifyContent: "center", padding: 20 },
+  container: { flex: 1,  alignItems: "center", justifyContent: "center", padding: 20 , backgroundColor:'maroon' },
   logo: { width: 100, height: 100, marginBottom: 20, resizeMode: "contain" },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 30, color: "#333" },
+  title: { fontSize: 24, fontWeight: "bold", marginBottom: 30, color: "#fff" },
   input: {
-    width: "100%",
+     width: "100%",
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 10,
     padding: 12,
     marginBottom: 15,
     fontSize: 16,
-    color: "#25d940ff",
+    color: "#000",
+    backgroundColor: "#fff",
   },
   button: {
-    backgroundColor: "#007bff",
+    marginTop:12,
+    backgroundColor: "#f1b2119f",
     paddingVertical: 12,
     borderRadius: 10,
     width: "100%",
@@ -107,6 +111,6 @@ const styles = StyleSheet.create({
   },
   buttonText: { color: "#fff", fontSize: 18, fontWeight: "600" },
   footer: { flexDirection: "row", marginTop: 20 },
-  footerText: { color: "#666" },
-  loginText: { color: "#007bff", marginLeft: 5, fontWeight: "600" },
+  footerText: { color: "#fff" },
+  loginText: { color: "#66fd73ff", marginLeft: 5, fontWeight: "600" },
 });

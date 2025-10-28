@@ -294,3 +294,5 @@ const styles = StyleSheet.create({
   },
   commentButtonText: { color: "#121212", fontWeight: "600" },
 });
+
+    

@@ -13,6 +13,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import axios from "axios";
 import diwali from '../assets/images/diwali3.jpg';
+import { StatusBar } from "expo-status-bar";
+import zoho from '../assets/images/zoho.png'
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Entypo from '@expo/vector-icons/Entypo';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -23,20 +27,20 @@ export default function LoginScreen() {
   const backendURL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
 
-   useEffect(()=>{
+  //  useEffect(()=>{
 
-    const checkLogin = async()=>{
-      const token = await AsyncStorage.getItem('token');
-    if(token){
-      router.push('/home')
+  //   const checkLogin = async()=>{
+  //     const token = await AsyncStorage.getItem('token');
+  //   if(token){
+  //     router.push('/home')
 
-    }
-    else return
+  //   }
+  //   else return
 
-    }
-    checkLogin()
+  //   }
+  //   checkLogin()
     
-   },[])
+  //  },[])
 
  
   const handleLogin = async () => {
@@ -70,8 +74,9 @@ export default function LoginScreen() {
   };
 
   return (
-    <ImageBackground source={diwali} style={styles.container}>
-      <Image source={require("../assets/images/favicon.png")} style={styles.logo} />
+    <View style={styles.container}>
+      <StatusBar style="light"/>
+      <Image source={require("../assets/images/PostLogo.png")} style={styles.logo} />
       <Text style={styles.title}>Welcome to Postgram</Text>
 
       <TextInput
@@ -96,13 +101,52 @@ export default function LoginScreen() {
         <Text style={styles.buttonText}>{loading ? "Logging in..." : "Login"}</Text>
       </TouchableOpacity>
 
+      <View style={styles.dividerContainer}>
+        <View style={styles.line}/>
+      <Text style={styles.other}>
+        OR
+      </Text>
+      <View style={styles.line}/>
+      view can only be te;;
+      </View>
+      
+      <View style={styles.loginCard}>
+
+        <TouchableOpacity>
+           <Image source={zoho} style={styles.logoLogin}/> 
+          
+        </TouchableOpacity>
+
+
+         <TouchableOpacity>
+          <AntDesign name="google" size={40} color="green" />
+        </TouchableOpacity>
+
+
+
+         <TouchableOpacity>
+               <Entypo name="instagram" size={35} color="pink" />
+        </TouchableOpacity>
+        
+        
+       
+       
+       
+          
+        
+       
+        
+   
+
+      </View>
+
       <View style={styles.footer}>
-        <Text style={styles.footerText}>Don’t have an account?</Text>
+        <Text style={styles.footerText}>Don't have an account?</Text>
         <TouchableOpacity onPress={() => router.push("/signup")}>
           <Text style={styles.signupText}>Sign up</Text>
         </TouchableOpacity>
       </View>
-    </ImageBackground>
+    </View>
   );
 }
 
@@ -112,6 +156,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
+    backgroundColor:'maroon'
   },
   logo: { width: 100, height: 100, marginBottom: 20, resizeMode: "contain" },
   title: { fontSize: 24, fontWeight: "bold", marginBottom: 30, color: "#fff" },
@@ -127,7 +172,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   button: {
-    backgroundColor: "#007bff",
+    marginTop:12,
+    backgroundColor: "#f1b2119f",
     paddingVertical: 12,
     borderRadius: 10,
     width: "100%",
@@ -136,5 +182,10 @@ const styles = StyleSheet.create({
   buttonText: { color: "#fff", fontSize: 18, fontWeight: "600" },
   footer: { flexDirection: "row", marginTop: 20 },
   footerText: { color: "#fff" },
-  signupText: { color: "#007bff", marginLeft: 5, fontWeight: "600" },
+  signupText: { color: "#fbfb62ff", marginLeft: 5, fontWeight: "600" },
+  dividerContainer:{display:'flex', flexDirection:'row'},
+  line:{flex:1,height:1 , backgroundColor:'#ccc' , marginTop:22 },
+  other:{color:'#fff' , fontSize:18, padding:2 , marginTop:7 , marginHorizontal:10},
+  logoLogin:{width:65,height:35, borderRadius:12, marginBottom: 20, resizeMode: "contain" ,marginTop:17},
+  loginCard:{ width:'100%' ,display:'flex', flexDirection:'row' , justifyContent:'center', gap:20,alignItems:'center' , marginRight:25}   
 });
