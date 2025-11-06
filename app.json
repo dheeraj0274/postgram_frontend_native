@@ -2,6 +2,7 @@
   "expo": {
     "name": "client",
     "slug": "client",
+    "owner":"dheeraj35",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/PostLogo.png",
@@ -39,7 +40,8 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,

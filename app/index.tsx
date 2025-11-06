@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+
+import React, { use, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,42 +8,32 @@ import {
   StyleSheet,
   Image,
   Alert,
-  ImageBackground,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import axios from "axios";
-import diwali from '../assets/images/diwali3.jpg';
 import { StatusBar } from "expo-status-bar";
-import zoho from '../assets/images/zoho.png'
-import AntDesign from '@expo/vector-icons/AntDesign';
-import Entypo from '@expo/vector-icons/Entypo';
+import AntDesign from "@expo/vector-icons/AntDesign";
+import Entypo from "@expo/vector-icons/Entypo";
+import zoho from "../assets/images/zoho.png";
+
 
 export default function LoginScreen() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
   const backendURL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
+  useEffect(()=>{
+    const checkTOKEN=async()=>{
+      const token = await AsyncStorage.getItem('userId');
+      if(token) return router.replace('/home')
+    }
+  checkTOKEN()
+  })
 
-  //  useEffect(()=>{
-
-  //   const checkLogin = async()=>{
-  //     const token = await AsyncStorage.getItem('token');
-  //   if(token){
-  //     router.push('/home')
-
-  //   }
-  //   else return
-
-  //   }
-  //   checkLogin()
-    
-  //  },[])
-
- 
+  
   const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert("Error", "Please enter both email and password.");
@@ -51,9 +42,10 @@ export default function LoginScreen() {
 
     setLoading(true);
     try {
-      const res = await axios.post(`${backendURL}api/v1/login`, { email, password });
-      console.log('hi', res.data);
-      
+      const res = await axios.post(`${backendURL}api/v1/login`, {
+        email,
+        password,
+      });
 
       if (res.data.success) {
         await AsyncStorage.setItem("token", res.data.token);
@@ -61,22 +53,29 @@ export default function LoginScreen() {
         await AsyncStorage.setItem("userId", JSON.stringify(res.data.id));
 
         Alert.alert("Success", "Login successful!");
-        router.push("/home");
-      } else if (res.data.success===false){
+        router.replace("/home");
+      } else {
         Alert.alert("Error", res.data.message || "Invalid credentials");
       }
     } catch (err) {
       console.error("Login error:", err.response?.data || err.message);
-      Alert.alert("Login failed", err.response?.data?.message || "Something went wrong.");
+      Alert.alert(
+        "Login failed",
+        err.response?.data?.message || "Something went wrong."
+      );
     } finally {
       setLoading(false);
     }
   };
 
+
   return (
     <View style={styles.container}>
-      <StatusBar style="light"/>
-      <Image source={require("../assets/images/PostLogo.png")} style={styles.logo} />
+      <StatusBar style="light" />
+      <Image
+        source={require("../assets/images/PostLogo.png")}
+        style={styles.logo}
+      />
       <Text style={styles.title}>Welcome to Postgram</Text>
 
       <TextInput
@@ -97,47 +96,34 @@ export default function LoginScreen() {
         placeholderTextColor="#888"
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
-        <Text style={styles.buttonText}>{loading ? "Logging in..." : "Login"}</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleLogin}
+        disabled={loading}
+      >
+        <Text style={styles.buttonText}>
+          {loading ? "Logging in..." : "Login"}
+        </Text>
       </TouchableOpacity>
 
       <View style={styles.dividerContainer}>
-        <View style={styles.line}/>
-      <Text style={styles.other}>
-        OR
-      </Text>
-      <View style={styles.line}/>
-      view can only be te;;
+        <View style={styles.line} />
+        <Text style={styles.other}>OR</Text>
+        <View style={styles.line} />
       </View>
-      
-      <View style={styles.loginCard}>
 
+      <View style={styles.loginCard}>
         <TouchableOpacity>
-           <Image source={zoho} style={styles.logoLogin}/> 
-          
+          <Image source={zoho} style={styles.logoLogin} />
         </TouchableOpacity>
 
-
-         <TouchableOpacity>
+        <TouchableOpacity >
           <AntDesign name="google" size={40} color="green" />
         </TouchableOpacity>
 
-
-
-         <TouchableOpacity>
-               <Entypo name="instagram" size={35} color="pink" />
+        <TouchableOpacity>
+          <Entypo name="instagram" size={35} color="pink" />
         </TouchableOpacity>
-        
-        
-       
-       
-       
-          
-        
-       
-        
-   
-
       </View>
 
       <View style={styles.footer}>
@@ -156,7 +142,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
-    backgroundColor:'maroon'
+    backgroundColor:'#1A237E',
+    shadowColor:'#FFFFFF',
+    shadowOpacity:0.15,
+    shadowRadius:10
   },
   logo: { width: 100, height: 100, marginBottom: 20, resizeMode: "contain" },
   title: { fontSize: 24, fontWeight: "bold", marginBottom: 30, color: "#fff" },
@@ -172,7 +161,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   button: {
-    marginTop:12,
+    marginTop: 12,
     backgroundColor: "#f1b2119f",
     paddingVertical: 12,
     borderRadius: 10,
@@ -183,9 +172,29 @@ const styles = StyleSheet.create({
   footer: { flexDirection: "row", marginTop: 20 },
   footerText: { color: "#fff" },
   signupText: { color: "#fbfb62ff", marginLeft: 5, fontWeight: "600" },
-  dividerContainer:{display:'flex', flexDirection:'row'},
-  line:{flex:1,height:1 , backgroundColor:'#ccc' , marginTop:22 },
-  other:{color:'#fff' , fontSize:18, padding:2 , marginTop:7 , marginHorizontal:10},
-  logoLogin:{width:65,height:35, borderRadius:12, marginBottom: 20, resizeMode: "contain" ,marginTop:17},
-  loginCard:{ width:'100%' ,display:'flex', flexDirection:'row' , justifyContent:'center', gap:20,alignItems:'center' , marginRight:25}   
+  dividerContainer: { flexDirection: "row" },
+  line: { flex: 1, height: 1, backgroundColor: "#ccc", marginTop: 22 },
+  other: {
+    color: "#fff",
+    fontSize: 18,
+    padding: 2,
+    marginTop: 7,
+    marginHorizontal: 10,
+  },
+  logoLogin: {
+    width: 65,
+    height: 35,
+    borderRadius: 12,
+    marginBottom: 20,
+    resizeMode: "contain",
+    marginTop: 17,
+  },
+  loginCard: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 20,
+    alignItems: "center",
+    marginRight: 25,
+  },
 });

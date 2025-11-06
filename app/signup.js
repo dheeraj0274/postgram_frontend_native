@@ -26,8 +26,8 @@ export default function SignupScreen() {
           const res = await axios.post(`${backendURL}api/v1/register` , {name , email , password});
          console.log(res.data);
          if(res.data.success){
-          Alert.alert('Registration Successfull! Kindly Login')
-          router.push('/')
+          Alert.alert('Registration Successfull! Kindly Login');
+          router.replace('/');
          }
          else{
           Alert.alert('Error' , res.data.message)
@@ -87,7 +87,10 @@ export default function SignupScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1,  alignItems: "center", justifyContent: "center", padding: 20 , backgroundColor:'maroon' },
+  container: { flex: 1,  alignItems: "center", justifyContent: "center", padding: 20 ,  backgroundColor:'#1A237E',
+    shadowColor:'#FFFFFF',
+    shadowOpacity:0.15,
+    shadowRadius:10},
   logo: { width: 100, height: 100, marginBottom: 20, resizeMode: "contain" },
   title: { fontSize: 24, fontWeight: "bold", marginBottom: 30, color: "#fff" },
   input: {
